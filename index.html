@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Phishing Email Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="badge">🤖 AI-Powered Detection</div>
+            <h1>Phishing Email Detector</h1>
+            <p>Analyze emails with advanced AI and machine learning to detect phishing attempts</p>
+        </div>
+
+        <form method="POST" id="analysisForm">
+            <div class="form-section">
+                <label for="email_content">Paste Email Content:</label>
+                <textarea 
+                    name="email_content" 
+                    id="email_content" 
+                    placeholder="Copy and paste the complete email text here (subject, body, headers, etc.)..."
+                    required
+                >{{ email_content }}</textarea>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-analyze">🔍 Analyze Email</button>
+                <button type="button" class="btn-clear" onclick="clearForm()">Clear</button>
+            </div>
+        </form>
+
+        <!-- Error Message -->
+        {% if error %}
+        <div class="error-message show">
+            <strong>⚠ Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+
+        <!-- Result Section -->
+        {% if prediction %}
+        <div class="result-section show">
+            <!-- Main Result Card -->
+            <div class="result-card {% if prediction == 'PHISHING' %}phishing{% else %}safe{% endif %}">
+                <div class="result-status {% if prediction == 'PHISHING' %}phishing{% else %}safe{% endif %}">
+                    {% if prediction == 'PHISHING' %}
+                        🚨
+                    {% else %}
+                        ✅
+                    {% endif %}
+                </div>
+                <div class="status-text {% if prediction == 'PHISHING' %}phishing{% else %}safe{% endif %}">
+                    {{ prediction }}
+                </div>
+                <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
+                    {% if prediction == 'PHISHING' %}
+                        This email has been flagged as potentially malicious. Use caution with any links or attachments.
+                    {% else %}
+                        This email appears to be legitimate and safe. However, always verify unexpected requests.
+                    {% endif %}
+                </p>
+
+                <div class="confidence-meter">
+                    <div class="confidence-label">
+                        <span>Detection Confidence</span>
+                        <span>{{ "%.1f"|format(confidence) }}%</span>
+                    </div>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill {% if prediction == 'PHISHING' %}phishing{% endif %}" 
+                             style="width: {{ confidence }}%"></div>
+                    </div>
+                </div>
+
+                <!-- Score Breakdown -->
+                <div class="score-breakdown">
+                    <div class="score-box safe-score">
+                        <div class="score-label">Safe Probability</div>
+                        <div class="score-value">{{ "%.1f"|format(safe_score) }}%</div>
+                    </div>
+                    <div class="score-box phishing-score">
+                        <div class="score-label">Phishing Probability</div>
+                        <div class="score-value">{{ "%.1f"|format(phishing_score) }}%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Analysis Section -->
+            {% if explanation %}
+            <div class="risks-section">
+                <div class="risks-title">🔎 Risk Analysis</div>
+                
+                <div style="margin-bottom: 15px;">
+                    <span class="risk-level {{ explanation.risk_level }}">
+                        {{ explanation.risk_level }} RISK
+                    </span>
+                </div>
+
+                {% if risks %}
+                    <ul class="risk-list">
+                        {% for risk in risks %}
+                            <li class="risk-item">{{ risk }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="no-risks">
+                        ✓ No specific phishing indicators detected in this email.
+                    </div>
+                {% endif %}
+
+                <div class="explanation-section">
+                    <div class="explanation-title">📋 How We Detected This:</div>
+                    <div class="explanation-text">
+                        <strong>Detection Method:</strong> This email was analyzed using a Random Forest machine learning classifier trained on cybersecurity heuristics and AI-generated contextual embeddings. The model evaluates:
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>Suspicious URLs and hyperlink patterns</li>
+                            <li>High-risk vocabulary (urgency, verification requests)</li>
+                            <li>HTML and formatting anomalies</li>
+                            <li>Natural language context and tone</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function clearForm() {
+            // Clear the textarea
+            document.getElementById('email_content').value = '';
+            // Hide the result section
+            const resultSection = document.querySelector('.result-section');
+            if (resultSection) {
+                resultSection.classList.remove('show');
+            }
+            // Hide the error message
+            const errorMessage = document.querySelector('.error-message');
+            if (errorMessage) {
+                errorMessage.classList.remove('show');
+            }
+            // Focus on textarea
+            document.getElementById('email_content').focus();
+        }
+
+        document.getElementById('analysisForm').addEventListener('submit', function(e) {
+            const textarea = document.getElementById('email_content');
+            if (textarea.value.trim() === '') {
+                e.preventDefault();
+                alert('Please enter email content to analyze');
+            }
+        });
+    </script>
+</body>
+</html>
