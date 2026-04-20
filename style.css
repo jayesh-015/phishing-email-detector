@@ -1,0 +1,352 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 900px;
+    width: 100%;
+    padding: 40px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    color: #333;
+    font-size: 32px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.header p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.badge {
+    display: inline-block;
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.form-section {
+    margin-bottom: 30px;
+}
+
+.form-section label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.form-section textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 180px;
+    transition: border-color 0.3s;
+}
+
+.form-section textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    flex: 1;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-analyze {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-analyze:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-clear {
+    background: #f5f5f5;
+    color: #333;
+    border: 2px solid #e0e0e0;
+}
+
+.btn-clear:hover {
+    background: #eeeeee;
+}
+
+/* Result Styles */
+.result-section {
+    display: none;
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 2px solid #e0e0e0;
+}
+
+.result-section.show {
+    display: block;
+}
+
+.result-card {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.result-status {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.result-status.phishing .status-text {
+    color: #d32f2f;
+}
+
+.result-status.safe .status-text {
+    color: #388e3c;
+}
+
+.status-text {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.confidence-meter {
+    margin-top: 20px;
+}
+
+.confidence-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+}
+
+.confidence-bar {
+    height: 12px;
+    background: #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.confidence-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #388e3c 0%, #66bb6a 100%);
+    border-radius: 6px;
+    transition: width 0.5s ease;
+}
+
+.confidence-fill.phishing {
+    background: linear-gradient(90deg, #d32f2f 0%, #ef5350 100%);
+}
+
+.score-breakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.score-box {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.score-box.phishing-score {
+    border-left-color: #d32f2f;
+}
+
+.score-box.safe-score {
+    border-left-color: #388e3c;
+}
+
+.score-label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.score-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+}
+
+.risks-section {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.risks-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.risk-list {
+    list-style: none;
+}
+
+.risk-item {
+    background: #fff3e0;
+    border-left: 4px solid #ff9800;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    color: #e65100;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.risk-item::before {
+    content: "⚠";
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.risk-level {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.risk-level.LOW {
+    background: #c8e6c9;
+    color: #2e7d32;
+}
+
+.risk-level.MEDIUM {
+    background: #ffe0b2;
+    color: #e65100;
+}
+
+.risk-level.HIGH {
+    background: #ffcdd2;
+    color: #c62828;
+}
+
+.risk-level.CRITICAL {
+    background: #f44336;
+    color: white;
+}
+
+.error-message {
+    background: #ffebee;
+    border: 2px solid #ef5350;
+    color: #c62828;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+}
+
+.no-risks {
+    background: #e8f5e9;
+    border-left: 4px solid #388e3c;
+    padding: 15px;
+    border-radius: 4px;
+    color: #2e7d32;
+    font-size: 14px;
+}
+
+.explanation-section {
+    background: #f0f4ff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.explanation-title {
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.explanation-text {
+    color: #555;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .score-breakdown {
+        grid-template-columns: 1fr;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+}
